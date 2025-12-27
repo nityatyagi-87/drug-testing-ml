@@ -1,0 +1,24 @@
+name: Daily GitHub Commit (Keep Green)
+
+on:
+  schedule:
+    # Every day at 9:00 AM IST (3:30 UTC)
+    - cron: '30 3 * * *'
+  workflow_dispatch:
+
+jobs:
+  daily-update:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Update daily log
+        run: |
+          echo "Last auto-update: $(date)" > daily_update.txt
+          git config --global user.name "nityatyagi-87"
+          git config --global user.email "nityatyagi87@gmail.com"
+          git add daily_update.txt
+          git commit -m "Automated daily update" || echo "No changes to commit"
+          git push
